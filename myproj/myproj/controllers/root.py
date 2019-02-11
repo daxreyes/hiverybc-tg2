@@ -37,7 +37,7 @@ class RootController(BaseController):
     secc = SecureController()
     admin = AdminController(model, None, config_type=TGAdminConfig)
     people = PeopleAPIController(model.DBSession)
-    company = CompanyAPIController(model.DBSession)
+    companies = CompanyAPIController(model.DBSession)
     
 
     error = ErrorController()
