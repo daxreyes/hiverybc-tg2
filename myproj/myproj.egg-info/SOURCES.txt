@@ -16,6 +16,7 @@ myproj/config/environment.py
 myproj/config/middleware.py
 myproj/controllers/__init__.py
 myproj/controllers/error.py
+myproj/controllers/paranuara.py
 myproj/controllers/root.py
 myproj/controllers/secure.py
 myproj/i18n/ru/LC_MESSAGES/myproj.po
@@ -25,6 +26,8 @@ myproj/lib/base.py
 myproj/lib/helpers.py
 myproj/model/__init__.py
 myproj/model/auth.py
+myproj/model/company.py
+myproj/model/people.py
 myproj/model/session.py
 myproj/public/favicon.ico
 myproj/public/css/bootstrap.min.css

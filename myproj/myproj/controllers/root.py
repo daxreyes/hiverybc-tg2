@@ -8,11 +8,14 @@ from tg.exceptions import HTTPFound
 from tg import predicates
 from myproj import model
 from myproj.controllers.secure import SecureController
+from myproj.controllers.paranuara import PeopleAPIController, CompanyAPIController
+
 from tgext.admin.mongo import BootstrapTGMongoAdminConfig as TGAdminConfig
 from tgext.admin.controller import AdminController
 
 from myproj.lib.base import BaseController
 from myproj.controllers.error import ErrorController
+
 
 __all__ = ['RootController']
 
@@ -33,6 +36,9 @@ class RootController(BaseController):
     """
     secc = SecureController()
     admin = AdminController(model, None, config_type=TGAdminConfig)
+    people = PeopleAPIController(model.DBSession)
+    company = CompanyAPIController(model.DBSession)
+    
 
     error = ErrorController()
 

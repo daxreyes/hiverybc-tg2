@@ -26,7 +26,7 @@ class People(MappedClass):
     company_id = FieldProperty(s.Int(required=True))
     # company_id = ForeignIdProperty('Company')
     # company = RelationProperty('Company')
-    email = FieldProperty(EmailSchema)
+    email = FieldProperty(EmailSchema, required=False)
     eyeColor = FieldProperty(s.String)
     favouriteFood = FieldProperty(s.Array(s.String))
     friends = FieldProperty(s.Array(s.Anything))
@@ -39,7 +39,7 @@ class People(MappedClass):
     phone = FieldProperty(s.String)
     picture = FieldProperty(s.String)
     # registered = FieldProperty(s.DateTime)
-    registered = FieldProperty(s.Anything)
+    registered = FieldProperty(s.Anything(required=False, if_missing=''))
     tags = FieldProperty(s.Array(s.String))
 
 
@@ -53,4 +53,7 @@ class Company(MappedClass):
     company = FieldProperty(s.String(required=True))
 
 
-    employees = RelationProperty('People')
+    @property
+    def employees(self):
+        return People.query.find(dict(company_id=self.index)).all()
+
