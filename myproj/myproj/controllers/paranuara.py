@@ -126,10 +126,22 @@ class EmployeesAPIController(EasyCrudRestController):
 
     @expose('json')
     def get_all(self):
-        company_id = request.controller_state.routing_args.get('company_id')
-        print('**** {}  {}'.format(company_id, type(company_id)))
-        company =  M.Company.query.get(index=int(company_id))
-        return dict(company=company, employees=company.employees)
+        '''
+        employees and some of employee details of company
+        '''
+        company_id = Int().to_python(request.controller_state.routing_args.get('company_id'))
+        log.debug('company {}  {}'.format(company_id, type(company_id)))
+        company =  M.Company.query.get(index=company_id)
+        employees = [
+            dict([ (k, i[k]) for k in [
+                'name', 
+                'age', 
+                'address', 
+                'phone', 
+                'index', 
+                'email', 
+                'company_id']]) for i in company.employees]
+        return dict(company=company, employees=employees)
 
 
 class CompanyAPIController(EasyCrudRestController):
