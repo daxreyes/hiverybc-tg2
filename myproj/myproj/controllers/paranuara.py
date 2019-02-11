@@ -2,6 +2,7 @@ import logging
 from tg import expose
 from tg import request, validate
 from formencode.validators import NotEmpty, Int, DateConverter, String, Bool
+from formencode import Invalid
 from tgext.crud import EasyCrudRestController
 from myproj import model as M
 
@@ -22,11 +23,12 @@ VEGETABLES = set([ 'beetroot',
 
 class PeopleFoodsAPIController(EasyCrudRestController):
     '''
+    Resource to display a persons favourite food split into fruits and vegetables
     curl 'http://localhost:8080/people/1/foods.json?vegetables=true&fruits=true'
     '''
     model = M.People
 
-    @expose('json')
+    @expose('json', inherit=True)
     def get_all(self, **kw):
         """
         
@@ -61,20 +63,20 @@ class PeopleFoodsAPIController(EasyCrudRestController):
 
 
 class CommonFriendsAPIController(EasyCrudRestController):
-    pagination = True
+    '''
+    Resource to display common friends between people
+    To get common friends with {
+            'eyeColor':'brown',
+            'has_died':false
+        }
+    curl 'http://localhost:8080/people/1/common_friends/2.json?index=2&eyeColor=brown&has_died=false'
+    '''
     model = M.People
     @validate({
         'friend_index':Int(not_empty=True),
     })
-    @expose('json')
+    @expose('json', inherit=True)
     def get_one(self, friend_index, **kw):
-        '''
-        To get common friends with {
-            'eyeColor':'brown',
-            'has_died':false
-        }
-        curl 'http://localhost:8080/people/1/common_friends/2.json?index=2&eyeColor=brown&has_died=false'
-        '''
         index = request.controller_state.routing_args.get('index')
         
         log.debug('common_friends params {} {} {} {} {}'.format(index, type(index), type(friend_index), kw, request.controller_state.routing_args))
@@ -102,7 +104,9 @@ class CommonFriendsAPIController(EasyCrudRestController):
 
 
 class PeopleAPIController(EasyCrudRestController):
-    # pagination = True
+    """
+    People resource use index to get item
+    """
     model = M.People
 
     common_friends = CommonFriendsAPIController(M.DBSession)
@@ -111,12 +115,16 @@ class PeopleAPIController(EasyCrudRestController):
     @validate({
         'index':Int(not_empty=True)
     })
-    @expose('json')
-    def get_one(self, index):
-        person = M.People.query.find({
-            'index':index}).one()
-        print('get_one, person {}'.format(person))
-        return dict(person=person)
+    @expose(inherit=True)
+    def get_one(self, index, *args, **kw):
+        """
+        override get_one in order to use index instead of _id
+        """
+        person = M.People.query.get(index=index)
+        log.debug('person {}'.format(person))
+        if(person):
+            kw['_id'] = person._id
+        return super(PeopleAPIController, self).get_one(*args, **kw)
 
 
 
@@ -124,24 +132,38 @@ class PeopleAPIController(EasyCrudRestController):
 class EmployeesAPIController(EasyCrudRestController):
     model = M.People
 
-    @expose('json')
+    @expose('json', inherit=True)
     def get_all(self):
         '''
-        employees and some of employee details of company
+        company employees and selected employee details
         '''
-        company_id = Int().to_python(request.controller_state.routing_args.get('company_id'))
-        log.debug('company {}  {}'.format(company_id, type(company_id)))
-        company =  M.Company.query.get(index=company_id)
-        employees = [
-            dict([ (k, i[k]) for k in [
-                'name', 
-                'age', 
-                'address', 
-                'phone', 
-                'index', 
-                'email', 
-                'company_id']]) for i in company.employees]
-        return dict(company=company, employees=employees)
+        errors = []
+        try:
+            company_id = Int().to_python(request.controller_state.routing_args.get('company_id'))
+            company =  M.Company.query.get(index=company_id)
+            log.debug('company {}  {} {}'.format(company_id, type(company_id), company))
+        except Invalid as ve:
+            errors.append({'Invalid':str(ve)})
+        else:
+            try:
+                employees = []
+                if company:
+                    employees = [
+                        dict([ (k, i[k]) for k in [
+                            'name', 
+                            'age', 
+                            'address', 
+                            'phone', 
+                            'index', 
+                            'email', 
+                            'company_id']]) for i in company.employees]
+            except KeyError as e:
+                errors.append({'KeyError': str(e)})
+
+        if not errors:
+            return dict(company=company, employees=employees)
+        else:
+            return dict(errors=errors)
 
 
 class CompanyAPIController(EasyCrudRestController):
@@ -149,15 +171,15 @@ class CompanyAPIController(EasyCrudRestController):
         curl 'http://localhost:8080/companies/1.json'
 
     '''
-    # pagination = True
     model = M.Company
 
+    # sub resource employees
     employees = EmployeesAPIController(M.DBSession)
 
     @validate({
         'company_id':Int(not_empty=True)
     })
-    @expose('json')
+    @expose('json', inherit=True)
     def get_one(self, company_id):
         """
         By default returns something like this given an objectId
