@@ -82,15 +82,15 @@ class TestPeople(ModelTest):
     }
 
     def test_obj_creation_name(self):
-        """The obj constructor must set the user name right"""
+        """The People obj constructor must set the user name right"""
         eq_(self.obj.name, "Bonnie Bass")
 
     def test_obj_creation_email(self):
-        """The obj constructor must set the email right"""
+        """The People obj constructor must set the email right"""
         eq_(self.obj.email, "bonniebass@earthmark.com")
 
     def test_getting_index(self):
-        """Users should be fetcheable by their email addresses"""
+        """People should be fetcheable by their index"""
         him = model.People.query.get(index=2)
         eq_(him._id, self.obj._id)
 
@@ -102,11 +102,11 @@ class TestCompany(ModelTest):
     attrs = {"index" : 0, "company" : "NETBOOK" }
 
     def test_obj_creation_company(self):
-        """The obj constructor must set the user name right"""
+        """The Company obj constructor must set the company field right"""
         eq_(self.obj.company, "NETBOOK")
 
     def test_obj_creation_index(self):
-        """The obj constructor must set the email right"""
+        """The Company obj constructor must set the index right"""
         eq_(self.obj.index, 0)
 
     def test_getting_index(self):

@@ -97,6 +97,15 @@ class TestParanuaraAPIController(TestController):
             resp.json
         )
 
+    def test_add_company(self):
+        """Company resource adds a new company"""
+        data = {"index" : 4, "company" : "BUGSALL"}
+        resp = self.app.post_json(url='/companies.json', params = data,status=200)
+        ok_(
+            (data['company'] == resp.json['value']['company']) and data['index'] == resp.json['value']['index'] ,
+            resp.json
+        )
+
     def test_company_has_employees(self):
         """company/employee resource returns list of employees"""
         resp = self.app.get('/companies/59/employees.json')
@@ -110,6 +119,36 @@ class TestParanuaraAPIController(TestController):
         resp = self.app.get('/companies/58/employees.json')
         ok_(
             (58 == resp.json['value']['company']['index']) and (0 == len(resp.json['value']['employees']))  ,
+            resp.json
+        )
+
+    def test_company_add_employees(self):
+        """company/employee resource add an employee"""
+        person ={
+                '_id': '58dab52a6f4ae8b67d476745',
+                'about': 'I am a new employee', 
+                'address': '455 New Court, Nadine, Somewhere, 6499',
+                'age': 45,
+                'balance': '$2,123',
+                # 'company_id': 59,
+                'email': 'newemployee@somewhere.com',
+                'eyeColor': 'brown',
+                'favouriteFood': ['beetroot', 'banana', 'strawberry'],
+                'friends': [{'index': 0}, {'index': 595}],
+                'gender': 'male',
+                'greeting': 'Hello, New Emp! You have 1 unread messages.',
+                'guid': '8f5e4171-f039-4d6f-8578-c4e7603c13b8',
+                'has_died': False,
+                'index': 10001,
+                'name': 'New Emp',
+                'phone': '+1 (111) 111-2222',
+                'picture': 'http://placehold.it/32x32',
+                'registered': '2019-01-08T04:23:18 -10:00',
+                'tags': ['new', 'employee']
+            }
+        resp = self.app.post_json(url='/companies/58/employees.json', params = person,status=200)
+        ok_(
+            (58 == resp.json['value']['company_id']) and person['_id'] == resp.json['value']['_id'] ,
             resp.json
         )
 
