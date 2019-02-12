@@ -4,6 +4,8 @@ from tg import request, validate
 from formencode.validators import NotEmpty, Int, DateConverter, String, Bool
 from formencode import Invalid
 from tgext.crud import EasyCrudRestController
+from pymongo.errors import DuplicateKeyError
+from tg import abort
 from myproj import model as M
 
 log = logging.getLogger(__name__)
@@ -148,20 +150,19 @@ class PeopleAPIController(EasyCrudRestController):
 
     @expose('json')
     def post(self, *args, **kw):
-        request.params.update(request.json_body)
-        
-        errors = []
         kw.update(request.json_body)
         try:
             res = super(PeopleAPIController, self).post(*args, **kw)
+        except DuplicateKeyError as duplicate:
+            log.error('{}'.format(duplicate))
+            M.DBSession.clear()
+            abort(409, '{}'.format(type(duplicate)),passthrough="json")
         except Exception as e:
-            log.error('{}'.format(e))
-            errors.append(errors)
+            log.error('{} {}'.format(e, type(e)))
+            M.DBSession.clear()
+            abort(406, '{}'.format(type(e)),passthrough="json")
 
-        if  errors:
-            return {'errors': errors}
-        else:
-            return res
+        return res
 
 
 
@@ -204,19 +205,25 @@ class EmployeesAPIController(EasyCrudRestController):
     
     @expose('json')
     def post(self, *args, **kw):
+        '''
+        Post method for adding an employee
+        curl -i -X POST -H "Content-Type: application/json" http://localhost:8080/companies/58/employees.json -d '{"_id": "58dab52a6f4ae8b67d476745", "about": "I am a new employee", "address": "455 New Court, Nadine, Somewhere, 6499", "age": 45, "balance": "$2,123", "email": "newemployee@somewhere.com", "eyeColor": "brown", "favouriteFood": ["beetroot", "banana", "strawberry"], "friends": [{"index": 0}, {"index": 595}], "gender": "male", "greeting": "Hello, New Emp! You have 1 unread messages.", "guid": "8f5e4171-f039-4d6f-8578-c4e7603c13b8", "has_died": false, "index": 10001, "name": "New Emp", "phone": "+1 (111) 111-2222", "picture": "http://placehold.it/32x32", "registered": "2019-01-08T04:23:18 -10:00", "tags": ["new", "employee"]}'
+        '''
         errors = []
         kw.update(request.json_body)
         kw['company_id'] = request.controller_state.routing_args.get('company_id')
         try:
             res = super(EmployeesAPIController, self).post(*args, **kw)
+        except DuplicateKeyError as duplicate:
+            log.error('{}'.format(duplicate))
+            M.DBSession.clear()
+            abort(409, '{}'.format(type(duplicate)),passthrough="json")
         except Exception as e:
-            log.error('{}'.format(e))
-            errors.append(errors)
+            log.error('{} {}'.format(e, type(e)))
+            M.DBSession.clear()
+            abort(406, '{}'.format(type(e)),passthrough="json")
 
-        if  errors:
-            return {'errors': errors}
-        else:
-            return res
+        return res
 
 class CompanyAPIController(EasyCrudRestController):
     '''
@@ -247,18 +254,20 @@ class CompanyAPIController(EasyCrudRestController):
 
     @expose('json')
     def post(self, *args, **kw):
-        errors = []
+        '''
+        post method for adding new company entry
+        '''
         kw.update(request.json_body)
         log.debug('company {} {}'.format(args,kw))
         try:
             res = super(CompanyAPIController, self).post(*args, **kw)
+        except DuplicateKeyError as duplicate:
+            log.error('{}'.format(duplicate))
+            M.DBSession.clear()
+            abort(409, '{}'.format(type(duplicate)),passthrough="json")
         except Exception as e:
-            log.error('{}'.format(e))
-            errors.append(errors)
+            log.error('{} {}'.format(e, type(e)))
+            M.DBSession.clear()
+            abort(406, '{}'.format(type(e)),passthrough="json")
 
-        if  errors:
-            return {'errors': errors}
-        else:
-            return res
-        
-       
+        return res
