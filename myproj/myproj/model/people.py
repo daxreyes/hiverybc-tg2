@@ -18,7 +18,7 @@ class People(MappedClass):
         session = DBSession
         name = 'people'
 
-    _id = FieldProperty(s.ObjectId(required=True))
+    _id = FieldProperty(s.ObjectId)
     about = FieldProperty(s.String(if_missing=''))
     address = FieldProperty(s.String(if_missing=''))
     age = FieldProperty(s.Int(required=True))
@@ -48,12 +48,15 @@ class Company(MappedClass):
         session = DBSession
         name = 'company'
 
-    _id = FieldProperty(s.ObjectId(required=True))
+    _id = FieldProperty(s.ObjectId)
     index = FieldProperty(s.Int(required=True))
     company = FieldProperty(s.String(required=True))
 
 
     @property
     def employees(self):
-        return People.query.find(dict(company_id=self.index)).all()
+        '''
+        Alive Employees
+        '''
+        return People.query.find(dict(company_id=self.index, has_died=False)).all()
 

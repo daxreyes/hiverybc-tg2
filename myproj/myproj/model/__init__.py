@@ -16,7 +16,6 @@ def init_model(engine):
 
 # Import your model modules here.
 from myproj.model.auth import User, Group, Permission
-# from myproj.model.company import company
 from myproj.model.people import People, Company
 
 __all__ = ('User', 'Group', 'Permission')
