@@ -1,6 +1,10 @@
 Installation and Setup
 ======================
 
+Clone this project url with recursive option to include the hivery-backend-challenge submodule
+
+    $ git clone --recursive <project url>
+
 Load to ``mongodb`` the inital data from hivery-backend-challenge::
 
     $ mongoimport --db paranuara --collection company --type json --file ./hivery-backend-challenge/resources/companies.json --jsonArray
