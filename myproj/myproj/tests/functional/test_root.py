@@ -72,7 +72,7 @@ class TestRootController(TestController):
 
 
 class TestParanuaraAPIController(TestController):
-    """Tests for the method in paranuara."""
+    """Tests for the methods in paranuara."""
     def test_person_json(self):
         """People resource item display demo works with JSON"""
         resp = self.app.get('/people/0.json')
@@ -196,3 +196,155 @@ class TestParanuaraAPIController(TestController):
             (1 == len(resp.json['value']['vegetables']))  ,
             resp.json
         )
+
+
+class TestInvalidInputParanuaraAPIController(TestController):
+    
+    def test_duplicate_person_json(self):
+        """People resource add item prevents duplicate in JSON"""
+        person ={
+                '_id': '595eeb9bb3821d9982ea44f9',
+                'about': 'Ex cillum commodo labore sint non velit aliquip',
+                'address': '455 Dictum Court, Nadine, Mississippi, 6499',
+                'age': 54,
+                'balance': '$2,119.44',
+                'company_id': 59,
+                'email': 'bonniebass@earthmark.com',
+                'eyeColor': 'blue',
+                'favouriteFood': ['orange', 'beetroot', 'banana', 'strawberry'],
+                'friends': [{'index': 0}, {'index': 1}, {'index': 2}],
+                'gender': 'female',
+                'greeting': 'Hello, Bonnie Bass! You have 10 unread messages.',
+                'guid': '49c04b8d-0a96-4319-b310-d6aa8269adca',
+                'has_died': False,
+                'index': 2,
+                'name': 'Bonnie Bass',
+                'phone': '+1 (823) 428-3710',
+                'picture': 'http://placehold.it/32x32',
+                'registered': '2017-06-08T04:23:18 -10:00',
+                'tags': ['quis', 'sunt', 'sit', 'aliquip', 'pariatur', 'quis', 'nulla']}
+
+        resp = self.app.post_json(url='/people.json', params = person,status=409)
+
+        ok_(
+            'Duplicate' in resp.json['detail'],
+            resp.json
+        )
+
+    def test_invalid_person_json(self):
+        """People resource item add item prevents invalid field in JSON"""
+        person ={
+                '_id': '595eeb9bb3821d9982ea44f1',
+                'about': 'Ex cillum commodo labore sint non velit aliquip',
+                'address': '455 Dictum Court, Nadine, Mississippi, 6499',
+                'age': 54,
+                'balance': '$2,119.44',
+                'company_id': 59,
+                'email': 'bonniebass@earthmark.com',
+                'eyeColor': 'blue',
+                'favouriteFood': ['orange', 'beetroot', 'banana', 'strawberry'],
+                'friends': [{'index': 0}, {'index': 1}, {'index': 2}],
+                'gender': 'female',
+                'greeting': 'Hello, Bonnie Bass! You have 10 unread messages.',
+                'guid': '49c04b8d-0a96-4319-b310-d6aa8269adca',
+                'has_died': False,
+                'index': 'aasd',
+                'name': 'Bonnie Bass',
+                'phone': '+1 (823) 428-3710',
+                'picture': 'http://placehold.it/32x32',
+                'registered': '2017-06-08T04:23:18 -10:00',
+                'tags': ['quis', 'sunt', 'sit', 'aliquip', 'pariatur', 'quis', 'nulla']}
+
+        resp = self.app.post_json(url='/people.json', params = person,status=406)
+
+        ok_(
+            406 == resp.json['status'],
+            resp.json
+        )
+
+    def test_duplicate_employee_json(self):
+        """Employee resource add item prevents duplicate in JSON"""
+        person ={
+                '_id': '595eeb9bb3821d9982ea44f9',
+                'about': 'Ex cillum commodo labore sint non velit aliquip',
+                'address': '455 Dictum Court, Nadine, Mississippi, 6499',
+                'age': 54,
+                'balance': '$2,119.44',
+                'company_id': 59,
+                'email': 'bonniebass@earthmark.com',
+                'eyeColor': 'blue',
+                'favouriteFood': ['orange', 'beetroot', 'banana', 'strawberry'],
+                'friends': [{'index': 0}, {'index': 1}, {'index': 2}],
+                'gender': 'female',
+                'greeting': 'Hello, Bonnie Bass! You have 10 unread messages.',
+                'guid': '49c04b8d-0a96-4319-b310-d6aa8269adca',
+                'has_died': False,
+                'index': 2,
+                'name': 'Bonnie Bass',
+                'phone': '+1 (823) 428-3710',
+                'picture': 'http://placehold.it/32x32',
+                'registered': '2017-06-08T04:23:18 -10:00',
+                'tags': ['quis', 'sunt', 'sit', 'aliquip', 'pariatur', 'quis', 'nulla']}
+
+        resp = self.app.post_json(url='/companies/59/employees.json', params = person,status=409)
+
+        ok_(
+            'Duplicate' in resp.json['detail'],
+            resp.json
+        )
+
+    def test_invalid_employee_json(self):
+        """Employee resource add item prevents invalid field in JSON"""
+        person ={
+                '_id': '595eeb9bb3821d9982ea44f1',
+                'about': 'Ex cillum commodo labore sint non velit aliquip',
+                'address': '455 Dictum Court, Nadine, Mississippi, 6499',
+                'age': 54,
+                'balance': '$2,119.44',
+                'company_id': 59,
+                'email': 'bonniebass@earthmark.com',
+                'eyeColor': 'blue',
+                'favouriteFood': ['orange', 'beetroot', 'banana', 'strawberry'],
+                'friends': [{'index': 0}, {'index': 1}, {'index': 2}],
+                'gender': 'female',
+                'greeting': 'Hello, Bonnie Bass! You have 10 unread messages.',
+                'guid': '49c04b8d-0a96-4319-b310-d6aa8269adca',
+                'has_died': False,
+                'index': 'aasd',
+                'name': 'Bonnie Bass',
+                'phone': '+1 (823) 428-3710',
+                'picture': 'http://placehold.it/32x32',
+                'registered': '2017-06-08T04:23:18 -10:00',
+                'tags': ['quis', 'sunt', 'sit', 'aliquip', 'pariatur', 'quis', 'nulla']}
+
+        resp = self.app.post_json(url='/companies/59/employees.json', params = person,status=406)
+
+        ok_(
+            406 == resp.json['status'],
+            resp.json
+        )
+
+    def test_duplicate_company_json(self):
+        """Company resource add item prevents duplicate in JSON"""
+        company = {"index" : 0, "company" : "NETBOOK" }
+
+        resp = self.app.post_json(url='/companies.json', params = company,status=409)
+
+        ok_(
+            'Duplicate' in resp.json['detail'],
+            resp.json
+        )
+
+    def test_invalid_employee_json(self):
+        """Employee resource add item prevents invalid field in JSON"""
+        company = {"index" : 'aaa', "company" : "NETBOOK" }
+
+        resp = self.app.post_json(url='/companies.json', params = company, status=406)
+
+        ok_(
+            406 == resp.json['status'],
+            resp.json
+        )
+
+    
+    
