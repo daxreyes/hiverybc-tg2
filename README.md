@@ -5,7 +5,7 @@ Clone this project url with recursive option to include the hivery-backend-chall
 
     $ git clone --recursive <project url>
 
-Load to ``mongodb`` the inital data from hivery-backend-challenge::
+Load to ``mongodb`` ``paranuara`` database the inital data from hivery-backend-challenge::
 
     $ mongoimport --db paranuara --collection company --type json --file ./hivery-backend-challenge/resources/companies.json --jsonArray
     $ mongoimport --db paranuara --collection people --type json --file ./hivery-backend-challenge/resources/people.json --jsonArray
@@ -14,6 +14,7 @@ Install ``myproj`` using the setup.py script::
 
     $ cd myproj
     $ python setup.py develop
+    $ pip install tg.devtools
 
 Create the project database for any model classes defined::
 
