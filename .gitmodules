@@ -1,0 +1,3 @@
+[submodule "hivery-backend-challenge"]
+	path = hivery-backend-challenge
+	url = https://github.com/joaosgreccia/hivery-backend-challenge
