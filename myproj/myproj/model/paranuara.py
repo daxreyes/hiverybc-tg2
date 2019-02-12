@@ -1,5 +1,5 @@
 from ming import schema as s
-from ming.odm import FieldProperty, ForeignIdProperty, RelationProperty
+from ming.odm import FieldProperty, ForeignIdProperty, RelationProperty, FieldPropertyWithMissingNone
 from ming.odm import Mapper
 from ming.odm.declarative import MappedClass
 from myproj.model import DBSession
@@ -14,16 +14,23 @@ class EmailSchema(s.FancySchemaItem):
         return value
 
 class People(MappedClass):
+    '''
+    Model for people
+    '''
     class __mongometa__:
         session = DBSession
         name = 'people'
+        unique_indexes = [('index',)]
+        indexes = [('company_id',)]
 
     _id = FieldProperty(s.ObjectId)
     about = FieldProperty(s.String(if_missing=''))
     address = FieldProperty(s.String(if_missing=''))
     age = FieldProperty(s.Int(required=True))
+    #TODO: fix this to add currency symbol
     balance = FieldProperty(s.String)
-    company_id = FieldProperty(s.Int(required=True))
+    company_id = FieldPropertyWithMissingNone(s.Int(if_missing=s.Missing))
+    #TODO: use below once company_id is migrated to use ObjectId
     # company_id = ForeignIdProperty('Company')
     # company = RelationProperty('Company')
     email = FieldProperty(EmailSchema, required=False)
@@ -44,9 +51,13 @@ class People(MappedClass):
 
 
 class Company(MappedClass):
+    '''
+    Model for company
+    '''
     class __mongometa__:
         session = DBSession
         name = 'company'
+        unique_indexes = [('index',)]
 
     _id = FieldProperty(s.ObjectId)
     index = FieldProperty(s.Int(required=True))
