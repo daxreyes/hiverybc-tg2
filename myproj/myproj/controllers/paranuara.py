@@ -1,6 +1,6 @@
 import logging
 from tg import expose
-from tg import request, validate
+from tg import request, validate 
 from formencode.validators import NotEmpty, Int, DateConverter, String, Bool
 from formencode import Invalid
 from tgext.crud import EasyCrudRestController
@@ -135,7 +135,7 @@ class PeopleAPIController(EasyCrudRestController):
     @validate({
         'index':Int(not_empty=True)
     })
-    @expose(inherit=True)
+    @expose('json', inherit=True)
     def get_one(self, index, *args, **kw):
         """
         override get_one in order to use index instead of _id
@@ -146,6 +146,22 @@ class PeopleAPIController(EasyCrudRestController):
             kw['_id'] = person._id
         return super(PeopleAPIController, self).get_one(*args, **kw)
 
+    @expose('json')
+    def post(self, *args, **kw):
+        request.params.update(request.json_body)
+        
+        errors = []
+        kw.update(request.json_body)
+        try:
+            res = super(PeopleAPIController, self).post(*args, **kw)
+        except Exception as e:
+            log.error('{}'.format(e))
+            errors.append(errors)
+
+        if  errors:
+            return {'errors': errors}
+        else:
+            return res
 
 
 
@@ -185,6 +201,22 @@ class EmployeesAPIController(EasyCrudRestController):
         else:
             return dict(errors=errors)
 
+    
+    @expose('json')
+    def post(self, *args, **kw):
+        errors = []
+        kw.update(request.json_body)
+        kw['company_id'] = request.controller_state.routing_args.get('company_id')
+        try:
+            res = super(EmployeesAPIController, self).post(*args, **kw)
+        except Exception as e:
+            log.error('{}'.format(e))
+            errors.append(errors)
+
+        if  errors:
+            return {'errors': errors}
+        else:
+            return res
 
 class CompanyAPIController(EasyCrudRestController):
     '''
@@ -212,4 +244,21 @@ class CompanyAPIController(EasyCrudRestController):
         if(company):
             kw['_id'] = company._id
         return super(CompanyAPIController, self).get_one(*args, **kw)
+
+    @expose('json')
+    def post(self, *args, **kw):
+        errors = []
+        kw.update(request.json_body)
+        log.debug('company {} {}'.format(args,kw))
+        try:
+            res = super(CompanyAPIController, self).post(*args, **kw)
+        except Exception as e:
+            log.error('{}'.format(e))
+            errors.append(errors)
+
+        if  errors:
+            return {'errors': errors}
+        else:
+            return res
+        
        
