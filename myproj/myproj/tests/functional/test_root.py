@@ -69,3 +69,91 @@ class TestRootController(TestController):
         """Anonymous users must not access the secure controller"""
         self.app.get('/secc', status=401)
         # It's enough to know that authorization was denied with a 401 status
+
+
+class TestParanuaraAPIController(TestController):
+    """Tests for the method in paranuara."""
+    def test_person_json(self):
+        """People resource item display demo works with JSON"""
+        resp = self.app.get('/people/0.json')
+        ok_(
+            0 == resp.json['value']['index'],
+            resp.json
+        )
+        
+    def test_unkown_person_json(self):
+        """Unknown person returns value:null"""
+        resp = self.app.get('/people/9999.json', status=404)
+        ok_(
+            None == resp.json['value'],
+            resp.json
+        )
+
+    def test_company_json(self):
+        """Company resource returns a value"""
+        resp = self.app.get('/companies/59.json')
+        ok_(
+            59 == resp.json['value']['index'],
+            resp.json
+        )
+
+    def test_company_has_employees(self):
+        """company/employee resource returns list of employees"""
+        resp = self.app.get('/companies/59/employees.json')
+        ok_(
+            59 == resp.json['value']['company']['index'] and 2 == len(resp.json['value']['employees'])  ,
+            resp.json
+        )
+
+    def test_company_exclude_dead_employees(self):
+        """company/employee resource returns empty employees list"""
+        resp = self.app.get('/companies/58/employees.json')
+        ok_(
+            (58 == resp.json['value']['company']['index']) and (0 == len(resp.json['value']['employees']))  ,
+            resp.json
+        )
+
+    def test_common_friends(self):
+        """default common friends"""
+
+        resp = self.app.get('/people/595/common_friends/2.json')
+        ok_(
+            (1 == len(resp.json['value']['common_friends']))  ,
+            resp.json
+        )
+
+    def test_common_friends_params1(self):
+        """params has died blue eyed common friends"""
+
+        resp = self.app.get('/people/595/common_friends/2.json?eyeColor=blue&has_died=true')
+        ok_(
+            (1 == len(resp.json['value']['common_friends']))  ,
+            resp.json
+        )
+
+    def test_common_friends_params2(self):
+        """params of brown eyed alive common friends"""
+
+        resp = self.app.get('/people/595/common_friends/2.json?eyeColor=brown&has_died=false')
+        ok_(
+            (0 == len(resp.json['value']['common_friends']))  ,
+            resp.json
+        )
+
+    def test_fruits(self):
+        """Test split fruits and vegetables"""
+
+        resp = self.app.get('/people/0/foods.json?fruits=true')
+        ok_(
+            (4 == len(resp.json['value']['fruits']))  ,
+            resp.json
+        )
+
+    def test_vegetables(self):
+        """Test split fruits and vegetables"""
+
+        resp = self.app.get('/people/2/foods.json?vegetables=true')
+        ok_(
+            (1 == len(resp.json['value']['vegetables']))  ,
+            resp.json
+        )

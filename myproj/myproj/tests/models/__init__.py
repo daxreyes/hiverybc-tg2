@@ -43,7 +43,9 @@ class ModelTest(object):
                 datastore.conn.clear_all()
             except:
                 # On MongoDB drop database
-                datastore.conn.drop_database(datastore.db)
+                # datastore.conn.drop_database(datastore.db)
+                datastore.db.command("dropDatabase")
+
             raise
 
     def tearDown(self):
@@ -54,7 +56,8 @@ class ModelTest(object):
             datastore.conn.clear_all()
         except:
             # On MongoDB drop database
-            datastore.conn.drop_database(datastore.db)
+            # datastore.conn.drop_database(datastore.db)
+            datastore.db.command("dropDatabase")
 
     def do_get_dependencies(self):
         """Get model test dependencies.
