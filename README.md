@@ -10,6 +10,11 @@ Load to ``mongodb`` ``paranuara`` database the inital data from hivery-backend-c
     $ mongoimport --db paranuara --collection company --type json --file ./hivery-backend-challenge/resources/companies.json --jsonArray
     $ mongoimport --db paranuara --collection people --type json --file ./hivery-backend-challenge/resources/people.json --jsonArray
 
+Optional: Create a virtual environment and activate it
+
+    $ python3.7 -m venv hiveryvenv
+    $ source hiveryvenv/bin/activate
+
 Install ``myproj`` using the setup.py script::
 
     $ cd myproj
@@ -34,12 +39,13 @@ Then you are ready to go.
 Testing
 =======
 
+*NOTE: The code is developed tested using python 3.7.2 and mongodb 3.4.19 on an ubuntu 16.04 derivative environment*
+
 ## Prior to running tests
 
-Install nosetests::
+Install nosetests and coverage::
 
-    $ pip install nose
-    $ pip install coverage
+    $ pip install nose coverage
 
 ## First run of test
 
