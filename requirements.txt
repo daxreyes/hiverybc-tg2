@@ -1,7 +1,6 @@
 Babel==2.6.0
 backlash==0.1.4
 Beaker==1.10.0
-coverage==4.5.2
 crank==0.8.1
 decorator==4.3.2
 FormEncode==2.0.0a1
@@ -10,7 +9,6 @@ Kajiki==0.7.2
 MarkupSafe==1.1.0
 Ming==0.8.0
 nine==1.0.0
-nose==1.3.7
 PasteDeploy==2.0.1
 Pygments==2.3.1
 pymongo==3.6.1
