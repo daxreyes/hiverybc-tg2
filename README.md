@@ -45,7 +45,7 @@ Testing
 
 NOTE: 
 
- - The code is developed tested using python 3.7.2 and mongodb 3.4.19 on ubuntu 16.04 derivative (Linux Mint) environment. 
+ - The code is developed and tested using python 3.7.2 and mongodb 3.4.19 on ubuntu 16.04 derivative (Linux Mint) environment. 
  
  - Tested to work also in python 3.6.7 and mongodb 3.6.3 on ubuntu 18.04
 
