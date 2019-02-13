@@ -71,6 +71,87 @@ Inside ``myproj`` main directory::
 
     $ nosetests --with-coverage --cover-erase
 
+    Wrong password keeps user_name in login form ... ok
+    Anonymous users are forced to login ... ok
+    Logouts must work correctly ... ok
+    Voluntary logins must work correctly ... ok
+    Company resource add item prevents duplicate in JSON ... ok
+    Employee resource add item prevents duplicate in JSON ... ok
+    People resource add item prevents duplicate in JSON ... ok
+    Employee resource add item prevents invalid field in JSON ... ok
+    People resource item add item prevents invalid field in JSON ... ok
+    Company resource adds a new company ... ok
+    default common friends ... ok
+    params has died blue eyed common friends ... ok
+    params of brown eyed alive common friends ... ok
+    company/employee resource add an employee ... ok
+    company/employee resource returns empty employees list ... ok
+    company/employee resource returns list of employees ... ok
+    Company resource returns a value ... ok
+    Test split fruits and vegetables ... ok
+    People resource item display demo works with JSON ... ok
+    Unknown person returns value:null ... ok
+    Test split fruits and vegetables ... ok
+    The data display demo works with HTML ... ok
+    The data display demo works with JSON ... ok
+    Displaying the wsgi environ works ... ok
+    The front page is working properly ... ok
+    Anonymous users must not access the secure controller ... ok
+    The editor cannot access the secure controller ... ok
+    The manager can access the secure controller ... ok
+    Model objects can be created ... ok
+    Company should be fetcheable by their index ... ok
+    The Company obj constructor must set the company field right ... ok
+    The Company obj constructor must set the index right ... ok
+    Model objects can be queried ... ok
+    Model objects can be created ... ok
+    Model objects can be queried ... ok
+    Model objects can be created ... ok
+    People should be fetcheable by their index ... ok
+    The People obj constructor must set the email right ... ok
+    The People obj constructor must set the user name right ... ok
+    Model objects can be queried ... ok
+    Model objects can be created ... ok
+    Model objects can be queried ... ok
+    Model objects can be created ... ok
+    Users should be fetcheable by their email addresses ... ok
+    User objects should have no permission by default. ... ok
+    The obj constructor must set the email right ... ok
+    The obj constructor must set the user name right ... ok
+    Model objects can be queried ... ok
+
+    Name                              Stmts   Miss  Cover
+    -----------------------------------------------------
+    myproj/__init__.py                    1      0   100%
+    myproj/config/__init__.py             0      0   100%
+    myproj/config/app_cfg.py             66      7    89%
+    myproj/config/environment.py          4      0   100%
+    myproj/config/middleware.py           8      0   100%
+    myproj/controllers/__init__.py        1      0   100%
+    myproj/controllers/error.py          15      2    87%
+    myproj/controllers/paranuara.py     145     11    92%
+    myproj/controllers/root.py           60      7    88%
+    myproj/controllers/secure.py         13      1    92%
+    myproj/lib/__init__.py                0      0   100%
+    myproj/lib/app_globals.py             5      0   100%
+    myproj/lib/base.py                    8      0   100%
+    myproj/lib/helpers.py                15      2    87%
+    myproj/model/__init__.py             12      0   100%
+    myproj/model/auth.py                 63      0   100%
+    myproj/model/paranuara.py            48      1    98%
+    myproj/model/session.py               4      0   100%
+    myproj/templates/__init__.py          1      0   100%
+    myproj/websetup/__init__.py          11      0   100%
+    myproj/websetup/bootstrap.py         24      0   100%
+    myproj/websetup/schema.py             4      0   100%
+    -----------------------------------------------------
+    TOTAL                               508     31    94%
+    ----------------------------------------------------------------------
+    Ran 48 tests in 11.951s
+
+    OK
+
+
 
 Hivery Backend Challenge Implementation
 =======================================
