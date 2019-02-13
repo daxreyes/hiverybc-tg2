@@ -39,7 +39,14 @@ Then you are ready to go.
 Testing
 =======
 
-*NOTE: The code is developed tested using python 3.7.2 and mongodb 3.4.19 on an ubuntu 16.04 derivative environment*
+NOTE: 
+
+ - The code is developed tested using python 3.7.2 and mongodb 3.4.19 on ubuntu 16.04 derivative (Linux Mint) environment. 
+ 
+ - Tested to work also in python 3.6.7 and mongodb 3.6.3 on ubuntu 18.04
+
+ - Tested to work also in python 3.7.2 and mongodb 3.4.9 on OSX 10.11.6
+
 
 ## Prior to running tests
 
