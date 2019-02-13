@@ -3,7 +3,7 @@ Installation and Setup
 
 Clone this project url with recursive option to include the hivery-backend-challenge submodule
 
-    $ git clone --recursive <project url>
+    $ git clone --recursive https://github.com/daxreyes/hiverybc-tg2.git
 
 Load to ``mongodb`` ``paranuara`` database the inital data from hivery-backend-challenge::
 
