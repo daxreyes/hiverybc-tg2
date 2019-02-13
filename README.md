@@ -15,11 +15,15 @@ Optional: Create a virtual environment and activate it
     $ python3.7 -m venv hiveryvenv
     $ source hiveryvenv/bin/activate
 
+Install requirements.txt
+
+    $ pip install -r requirements.txt
+
+
 Install ``myproj`` using the setup.py script::
 
     $ cd myproj
     $ python setup.py develop
-    $ pip install tg.devtools
 
 Create the project database for any model classes defined::
 
@@ -39,7 +43,14 @@ Then you are ready to go.
 Testing
 =======
 
-*NOTE: The code is developed tested using python 3.7.2 and mongodb 3.4.19 on an ubuntu 16.04 derivative environment*
+NOTE: 
+
+ - The code is developed tested using python 3.7.2 and mongodb 3.4.19 on ubuntu 16.04 derivative (Linux Mint) environment. 
+ 
+ - Tested to work also in python 3.6.7 and mongodb 3.6.3 on ubuntu 18.04
+
+ - Tested to work also in python 3.7.2 and mongodb 3.4.9 on OSX 10.11.6
+
 
 ## Prior to running tests
 
