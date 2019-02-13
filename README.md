@@ -12,10 +12,10 @@ Load to ``mongodb`` ``paranuara`` database the inital data from hivery-backend-c
 
 Optional: Create a virtual environment and activate it
 
-    $ python3.7 -m venv hiveryvenv
+    $ python3 -m venv hiveryvenv
     $ source hiveryvenv/bin/activate
 
-Install requirements.txt
+Install packages in requirements.txt
 
     $ pip install -r requirements.txt
 
@@ -56,7 +56,7 @@ NOTE:
 
 Install nosetests and coverage::
 
-    $ pip install nose coverage
+    $ pip install -r requirements_test.txt
 
 ## First run of test
 
