@@ -15,11 +15,15 @@ Optional: Create a virtual environment and activate it
     $ python3.7 -m venv hiveryvenv
     $ source hiveryvenv/bin/activate
 
+Install requirements.txt
+
+    $ pip install -r requirements.txt
+
+
 Install ``myproj`` using the setup.py script::
 
     $ cd myproj
     $ python setup.py develop
-    $ pip install tg.devtools
 
 Create the project database for any model classes defined::
 
