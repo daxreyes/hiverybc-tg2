@@ -1,5 +1,4 @@
 MANIFEST.in
-README.txt
 setup.cfg
 setup.py
 myproj/__init__.py
@@ -26,8 +25,7 @@ myproj/lib/base.py
 myproj/lib/helpers.py
 myproj/model/__init__.py
 myproj/model/auth.py
-myproj/model/company.py
-myproj/model/people.py
+myproj/model/paranuara.py
 myproj/model/session.py
 myproj/public/favicon.ico
 myproj/public/css/bootstrap.min.css
@@ -49,6 +47,7 @@ myproj/templates/index.xhtml
 myproj/templates/login.xhtml
 myproj/templates/master.xhtml
 myproj/templates/template.xhtml.template
+myproj/templates/__pycache__/__init__.cpython-35.pyc
 myproj/templates/__pycache__/__init__.cpython-37.pyc
 myproj/tests/__init__.py
 myproj/tests/functional/__init__.py
