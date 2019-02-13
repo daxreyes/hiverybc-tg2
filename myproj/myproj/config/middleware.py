@@ -3,7 +3,7 @@
 from myproj.config.app_cfg import base_config
 from myproj.config.environment import load_environment
 
-__all__ = ['make_app']
+__all__ = ["make_app"]
 
 # Use base_config to setup the necessary PasteDeploy application factory.
 # make_base_app will wrap the TG2 app with all the middleware it needs.

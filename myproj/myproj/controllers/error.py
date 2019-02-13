@@ -3,7 +3,7 @@
 from tg import request, expose
 from myproj.lib.base import BaseController
 
-__all__ = ['ErrorController']
+__all__ = ["ErrorController"]
 
 
 class ErrorController(BaseController):
@@ -18,10 +18,10 @@ class ErrorController(BaseController):
 
     """
 
-    @expose('myproj.templates.error')
+    @expose("myproj.templates.error")
     def document(self, *args, **kwargs):
         """Render the error document"""
-        resp = request.environ.get('tg.original_response')
+        resp = request.environ.get("tg.original_response")
         try:
             # tg.abort exposes the message as .detail in response
             message = resp.detail
@@ -29,10 +29,13 @@ class ErrorController(BaseController):
             message = None
 
         if not message:
-            message = ("<p>We're sorry but we weren't able to process "
-                       " this request.</p>")
+            message = (
+                "<p>We're sorry but we weren't able to process " " this request.</p>"
+            )
 
-        values = dict(prefix=request.environ.get('SCRIPT_NAME', ''),
-                      code=request.params.get('code', resp.status_int),
-                      message=request.params.get('message', message))
+        values = dict(
+            prefix=request.environ.get("SCRIPT_NAME", ""),
+            code=request.params.get("code", resp.status_int),
+            message=request.params.get("message", message),
+        )
         return values

@@ -14,8 +14,9 @@ def init_model(engine):
         mainsession.ensure_indexes(mapper.collection)
     return DBSession
 
+
 # Import your model modules here.
 from myproj.model.auth import User, Group, Permission
 from myproj.model.paranuara import People, Company
 
-__all__ = ('User', 'Group', 'Permission')
+__all__ = ("User", "Group", "Permission")

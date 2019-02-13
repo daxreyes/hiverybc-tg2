@@ -9,7 +9,7 @@ log = logging.getLogger(__name__)
 
 def current_year():
     now = datetime.now()
-    return now.strftime('%Y')
+    return now.strftime("%Y")
 
 
 def icon(icon_name):

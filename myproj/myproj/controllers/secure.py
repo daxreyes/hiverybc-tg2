@@ -6,7 +6,7 @@ from tg.predicates import has_permission
 
 from myproj.lib.base import BaseController
 
-__all__ = ['SecureController']
+__all__ = ["SecureController"]
 
 
 class SecureController(BaseController):
@@ -14,17 +14,16 @@ class SecureController(BaseController):
 
     # The predicate that must be met for all the actions in this controller:
     allow_only = has_permission(
-        'manage',
-        msg=l_('Only for people with the "manage" permission')
+        "manage", msg=l_('Only for people with the "manage" permission')
     )
 
-    @expose('myproj.templates.index')
+    @expose("myproj.templates.index")
     def index(self):
         """Let the user know that's visiting a protected controller."""
         flash(_("Secure Controller here"))
-        return dict(page='index')
+        return dict(page="index")
 
-    @expose('myproj.templates.index')
+    @expose("myproj.templates.index")
     def some_where(self):
         """Let the user know that this action is protected too."""
-        return dict(page='some_where')
+        return dict(page="some_where")

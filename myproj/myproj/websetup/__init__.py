@@ -5,7 +5,7 @@ import logging
 
 from myproj.config.environment import load_environment
 
-__all__ = ['setup_app']
+__all__ = ["setup_app"]
 
 log = logging.getLogger(__name__)
 

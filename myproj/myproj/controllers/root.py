@@ -17,7 +17,7 @@ from myproj.lib.base import BaseController
 from myproj.controllers.error import ErrorController
 
 
-__all__ = ['RootController']
+__all__ = ["RootController"]
 
 
 class RootController(BaseController):
@@ -34,91 +34,96 @@ class RootController(BaseController):
     must be wrapped around with :class:`tg.controllers.WSGIAppController`.
 
     """
+
     secc = SecureController()
     admin = AdminController(model, None, config_type=TGAdminConfig)
     people = PeopleAPIController(model.DBSession)
     companies = CompanyAPIController(model.DBSession)
-    
 
     error = ErrorController()
 
     def _before(self, *args, **kw):
         tmpl_context.project_name = "myproj"
 
-    @expose('myproj.templates.index')
+    @expose("myproj.templates.index")
     def index(self):
         """Handle the front-page."""
-        return dict(page='index')
-    @expose('myproj.templates.about')
+        return dict(page="index")
+
+    @expose("myproj.templates.about")
     def about(self):
         """Handle the 'about' page."""
-        return dict(page='about')
+        return dict(page="about")
 
-    @expose('myproj.templates.environ')
+    @expose("myproj.templates.environ")
     def environ(self):
         """This method showcases TG's access to the wsgi environment."""
-        return dict(page='environ', environment=request.environ)
+        return dict(page="environ", environment=request.environ)
 
-    @expose('myproj.templates.data')
-    @expose('json')
+    @expose("myproj.templates.data")
+    @expose("json")
     def data(self, **kw):
         """
         This method showcases how you can use the same controller
         for a data page and a display page.
         """
-        return dict(page='data', params=kw)
-    @expose('myproj.templates.index')
-    @require(predicates.has_permission('manage', msg=l_('Only for managers')))
+        return dict(page="data", params=kw)
+
+    @expose("myproj.templates.index")
+    @require(predicates.has_permission("manage", msg=l_("Only for managers")))
     def manage_permission_only(self, **kw):
         """Illustrate how a page for managers only works."""
-        return dict(page='managers stuff')
+        return dict(page="managers stuff")
 
-    @expose('myproj.templates.index')
-    @require(predicates.is_user('editor', msg=l_('Only for the editor')))
+    @expose("myproj.templates.index")
+    @require(predicates.is_user("editor", msg=l_("Only for the editor")))
     def editor_user_only(self, **kw):
         """Illustrate how a page exclusive for the editor works."""
-        return dict(page='editor stuff')
+        return dict(page="editor stuff")
 
-    @expose('myproj.templates.login')
-    def login(self, came_from=lurl('/'), failure=None, login=''):
+    @expose("myproj.templates.login")
+    def login(self, came_from=lurl("/"), failure=None, login=""):
         """Start the user login."""
         if failure is not None:
-            if failure == 'user-not-found':
-                flash(_('User not found'), 'error')
-            elif failure == 'invalid-password':
-                flash(_('Invalid Password'), 'error')
+            if failure == "user-not-found":
+                flash(_("User not found"), "error")
+            elif failure == "invalid-password":
+                flash(_("Invalid Password"), "error")
 
-        login_counter = request.environ.get('repoze.who.logins', 0)
+        login_counter = request.environ.get("repoze.who.logins", 0)
         if failure is None and login_counter > 0:
-            flash(_('Wrong credentials'), 'warning')
+            flash(_("Wrong credentials"), "warning")
 
-        return dict(page='login', login_counter=str(login_counter),
-                    came_from=came_from, login=login)
+        return dict(
+            page="login",
+            login_counter=str(login_counter),
+            came_from=came_from,
+            login=login,
+        )
 
     @expose()
-    def post_login(self, came_from=lurl('/')):
+    def post_login(self, came_from=lurl("/")):
         """
         Redirect the user to the initially requested page on successful
         authentication or redirect her back to the login page if login failed.
 
         """
         if not request.identity:
-            login_counter = request.environ.get('repoze.who.logins', 0) + 1
-            redirect('/login',
-                     params=dict(came_from=came_from, __logins=login_counter))
-        userid = request.identity['repoze.who.userid']
-        flash(_('Welcome back, %s!') % userid)
+            login_counter = request.environ.get("repoze.who.logins", 0) + 1
+            redirect("/login", params=dict(came_from=came_from, __logins=login_counter))
+        userid = request.identity["repoze.who.userid"]
+        flash(_("Welcome back, %s!") % userid)
 
         # Do not use tg.redirect with tg.url as it will add the mountpoint
         # of the application twice.
         return HTTPFound(location=came_from)
 
     @expose()
-    def post_logout(self, came_from=lurl('/')):
+    def post_logout(self, came_from=lurl("/")):
         """
         Redirect the user to the initially requested page on logout and say
         goodbye as well.
 
         """
-        flash(_('We hope to see you soon!'))
+        flash(_("We hope to see you soon!"))
         return HTTPFound(location=came_from)
